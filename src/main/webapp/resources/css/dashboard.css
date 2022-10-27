@@ -1,0 +1,53 @@
+#datePicker, #timePicker { font-size: 10px; }
+
+#do_legend{
+    width:100%;
+}
+
+#do_legend> ul{
+    padding: 0;
+    text-align: center;
+}
+
+
+#do_legend {
+    width:100%;
+    bottom:10%;
+}
+#do_legend li {
+    cursor: pointer;
+    margin: 4px 3px;
+    display: inline-table;
+}
+#do_legend li span {
+    position: relative;
+    padding: 3px 10px;
+    margin-right: 10px;
+    border-radius: 13px;
+    background-color: white;
+    z-index: 2;
+    font-size: 10px;
+}
+
+#do_legend{
+    height: 62px;
+    overflow-y: auto;
+}
+
+.donut-area{
+    height:calc(100% - 70px)
+}
+
+.list-group{
+    max-height: 200px;
+    height: 200px;
+    margin-bottom: 10px;
+    overflow-y:auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+canvas {
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+	}

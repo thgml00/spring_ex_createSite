@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper  namespace="mysite.kr.code.board.dao.BoardMapper">
+
+<select id="totalBoardCount" parameterType="map" resultType="int">
+
+	   select count(board_id) as count
+	   from board
+
+</select>
+
+<select id="getBoardList" parameterType="map" resultType="board" >
+
+ select *
+ from(
+		        select row_number() over(order by board_id desc) as rn,
+		                   board_id,
+		                   board_title,
+		                   board_contents, 
+		                   board_writer,
+		                   board_count, 
+		                   date_format(update_time, '%Y-%m-%d  %H:%i:%s') as update_time
+		        from board
+        ) b
+ where   rn <![CDATA[>=]]> 	#{start}   and   rn    <![CDATA[<=]]> #{end} 
+
+</select>
+
+<select id="getBoardDetail" parameterType="map" resultType="board">
+	select board_id,
+		   board_title,
+		   board_contents,
+		   board_writer,
+		   board_count,
+		   origin_file_name,
+		   stored_file_name,
+		   date_format(update_time, '%Y-%m-%d  %H:%i:%s') as update_time
+	from board
+	where board_id =#{boardId}
+</select>
+
+<insert id="writeBoard" parameterType="boardCreate">
+	insert into board(board_title, board_contents, origin_file_name, stored_file_name, board_writer)
+		 values(#{boardTitle}, #{boardContents}, #{originFileName}, #{storedFileName}, #{boardWriter})
+</insert>
+
+<update id="updateBoardCount" parameterType="map">
+	update board
+	set board_count=board_count + 1
+	where board_id=#{boardId}
+</update>
+
+<update id="updateBoard" parameterType="boardCreate">
+	update board
+	<set>
+		<if test="boardTitle neq null and boardTitle neq ''">
+			board_title=#{boardTitle},
+		</if>
+		
+		<if test="boardContents neq null and boardContents neq ''">
+			board_contents=#{boardContents},
+		</if>
+		
+		<if test="originFileName neq null and originFileName neq ''">
+			origin_file_name=#{originFileName},
+		</if>
+		
+		<if test="storedFileName neq null and storedFileName neq ''">
+			stored_file_name=#{storedFileName},
+		</if>
+		update_time=now()
+	</set>
+	where board_id=#{boardId}
+</update>
+
+</mapper>
