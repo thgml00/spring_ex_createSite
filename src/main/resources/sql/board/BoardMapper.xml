@@ -73,4 +73,8 @@
 	where board_id=#{boardId}
 </update>
 
+<delete id="deleteBoard" parameterType="map">
+	delete from board where board_id=#{boardId}
+</delete>
+
 </mapper>

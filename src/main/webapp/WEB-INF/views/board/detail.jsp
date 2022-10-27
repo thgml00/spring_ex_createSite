@@ -36,8 +36,9 @@
 				id="boardContents" name="boardContents" readonly="readonly">${board.boardContents}</textarea>
 		</div>
 		<div>
-			<button type="button" id="updateBtn" class="btn btn-primary pull-right">수정</button>
-			<button type="button" id="listBtn" class="btn btn-primary pull-right" style="margin-right:3px">목록으로</button>
+			<button type="button" id="listBtn" class="btn btn-primary pull-right" >목록으로</button>
+			<button type="button" id="deleteBtn" class="btn btn-primary pull-right" style="margin-right:3px">삭제</button>
+			<button type="button" id="updateBtn" class="btn btn-primary pull-right" style="margin-right:3px">수정</button>
 		</div>
 	</div>
 	<script>
@@ -45,6 +46,7 @@
 			//자바스크립트
 			const modifyBtn=document.querySelector('#updateBtn');
 			const listBtn=$('#listBtn'); //jquery 객체로 만듦
+			const deleteBtn=$('#deleteBtn');
 			
 			if(typeof modifyBtn!=='undefined'){
 				modifyBtn.addEventListener('click',function(e){ //자바 함수
@@ -56,6 +58,35 @@
 			if(typeof listBtn!=='undefined'){
 				listBtn.on('click',function(e){ //on은 jquery 함수
 					$('#contents').load('/board/list.do',null);
+				});
+			}
+			
+			if(typeof deleteBtn!=='undefined'){
+				deleteBtn.on('click',function(e){ //on은 jquery 함수
+					const isConfirm=confirm('정말 삭제하시겠습니까?');
+					
+					if(isConfirm){
+						$.ajax({
+							url:'/board/remove.do',
+							type:'GET',
+							dataType:'json',
+							data:{
+								boardId:$('#boardId').val()
+							}
+						}).done(function(data){
+							if(data.resultCode===200){
+								alert('게시글이 삭제되었습니다.');
+							}else{
+								alert('게시글이 삭제가 실패되었습니다.');
+							}
+							
+							$('#contents').load('/board/list.do',null);
+							
+						}).fail(function(xhr,status,error){
+							console.log(error);
+						})
+						
+					}
 				});
 			}
 		}

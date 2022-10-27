@@ -33,7 +33,7 @@ public class BoardController {
 		return view;
 	}
 	
-	
+	//암호화가 되어있다면 postmapping 사용
 	@PostMapping("/list.do")
 	@ResponseBody
 	public Map<String, Object> getBordData(@RequestParam(name="nowPageNumber") int nowPageNumber) throws Exception {
@@ -123,5 +123,21 @@ public class BoardController {
 		
 		return view;
 	}
+	
+	@GetMapping("/remove.do")
+	@ResponseBody
+	public Map<String, Object> removeBoard(@RequestParam(name="boardId") int boardId) throws Exception{
+		Map<String, Object> resultMap=new HashMap<>();
+		int result=boardService.deleteBoard(boardId);
+		
+		if(result>0) {
+			resultMap.put("resultCode", 200);
+		}else {
+			resultMap.put("resultCode", 500);
+		}
+		
+		return resultMap;
+	}
+	
 	
 }

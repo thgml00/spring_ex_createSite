@@ -59,4 +59,12 @@ public interface BoardMapper {
 	 * @throws SQLException
 	 */
 	int updateBoard(BoardData.BoardCreate boardCreate) throws SQLException;
+	
+	/**
+	 * 게시글 삭제 
+	 * @param param
+	 * @return
+	 * @throws SQLException
+	 */
+	int deleteBoard(Map<String,  Object> param) throws SQLException;
 }

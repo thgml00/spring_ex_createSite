@@ -95,6 +95,27 @@ public class BoardService {
 		
 	}
 	
+	public int deleteBoard(int boardId) throws Exception{
+		Map<String, Object> param = new HashMap<>();
+		param.put("boardId",boardId);
+		//기존 정보 가져오기
+		BoardVO vo=this.getBoardDetail(param);
+		
+		//수정할 데이터에 파일 객체가 존재한다면 기존 파일은 지워야 함
+		if(vo.getStoredFileName()!=null && vo.getStoredFileName().length()>0) {
+			String fullPath=CommonUtils.uploadPath+vo.getStoredFileName();
+			File file=new File(fullPath);
+			//해당경로에 진짜 존재한다면
+			if(file.exists()) {
+				//지운다
+				file.delete();
+			}
+		}
+		
+		return this.mapper.deleteBoard(param);
+		
+	}
+	
 	/*
 	 *파일을 업로드하기
 	 *@param boardRequest
