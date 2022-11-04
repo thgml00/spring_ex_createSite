@@ -50,7 +50,8 @@
                          <tbody id="dataBody"></tbody>
                       </table>     
                        <hr/>
-                       <a class="btn btn-default pull-right" href="javascript:void(0)" onclick="loadPage('writeBoard')">글쓰기</a>
+                       <a class="btn btn-default pull-right" 
+                                        href="javascript:void(0)" onclick="loadPage('writeBoard')">글쓰기</a>
                        <div class="text-center">
                                <ul class="pagination" id="pageDiv"></ul>
                        </div>
@@ -72,13 +73,15 @@
         	    	url : '/board/list.do',
         	    	data : param
         	    }).done(function(data){
-        	    	   drawTables(data.dataList,data.pageHtml);
+        	        console.log('그리기')
+        	    	drawTables(data.dataList,  data.pageHtml);
+        	 
         	    }).fail(function(xhr, status, exp){
         	    	  console.log(status);
         	    });	   
         }
 
-        function drawTables(list,pageHtml) {
+        function drawTables(list,  pageHtml) {
 	      	  const tbody = $('#dataBody');
 	    	  //비우기
 	    	  tbody.empty();
@@ -95,7 +98,7 @@
 	             
 	             const link = $('<a/>')
 	             link.attr('href', 'javascript:void(0);');
-	    		 link.attr('onclick',"goDetail(" + data.boardId + ");");
+	    		  link.attr('onclick',"goDetail(" + data.boardId + ");");
 	             
 	             //각각의 td 에 내용 채우기 
 	             rnTd.append(data.rn);
@@ -116,20 +119,21 @@
 	    		  tbody.append(tr);
 	    	  }
 	    	  
-	    	  //페이지 영역 만들기
-	    	  const pagingArea=$('#pageDiv');
-	    	  pagingArea.empty();
+	    	  //페이지 영역 만들기 
+	    	  const pagingArea = $('#pageDiv');
+	    	  pagingArea.empty(); 
 	    	  pagingArea.append(pageHtml);
+	    	  
         }
         
-        function goPage(pageNumber){
-        	$('#nowPageNumber').val(pageNumber+1);
-        	//다시 테이블 그리기
-        	getTableData();
+        function goPage(pageNumber) {
+              $('#nowPageNumber').val(pageNumber + 1);
+              //다시 테이블 그리기
+              getTableData();
         }
         
-        function goDetail(boardId){
-        	$('#contents').load('/board/detail.do?boardId='+boardId,null);
+        function goDetail(boardId) {
+        	$('#contents').load('/board/detail.do?boardId='+boardId, null);
         }
         
         $(document).ready(function(){

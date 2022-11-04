@@ -9,8 +9,8 @@
 	<typeAliases>
 	   <typeAlias type="java.util.Map" alias="map"/>
 	   <typeAlias type="mysite.kr.code.board.vo.BoardVO" alias="board"/>
-	   <typeAlias type="mysite.kr.code.board.vo.BoardData$BoardCreate" alias="boardCreate"/>
-	
+	    <typeAlias type="mysite.kr.code.board.vo.BoardData$BoardCreate" alias="boardCreate"/>
+	    <typeAlias type="mysite.kr.code.login.vo.LoginData$LoginUserInfo" alias="loginVO"/>
 	</typeAliases>
 	
 	

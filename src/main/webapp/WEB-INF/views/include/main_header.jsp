@@ -123,26 +123,51 @@
                         <%-- The user image in the navbar--%>
                         <img src="<c:url value="/resources/dist/img/default-user-image.jpg"/>" class="user-image" alt="User Image">
                         <%-- hidden-xs hides the username on small devices so only the image appears. --%>
-                        <span class="hidden-xs">Guest</span>
+                        <c:if test="${sessionScope.userInfo != null}">
+                        	<span class="hidden-xs">${sessionScope.userInfo.userName}</span>
+                        </c:if>
+                        <c:if test="${sessionScope.userInfo == null}">
+                        	<span class="hidden-xs">Guest</span>
+                        </c:if>
                     </a>
                     <ul class="dropdown-menu">
                         <%-- The user image in the menu --%>
-                        <li class="user-header">
-                            <img src="<c:url value="/resources/dist/img/default-user-image.jpg"/>" class="img-circle" alt="User Image">
-
-                            <p>
-                                Guest
-                            </p>
-                        </li>
-                        <%-- Menu Footer--%>
-                        <li class="user-footer">
-                            <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">프로필</a>
-                            </div>
-                            <div class="pull-right">
-                                <a href="#" class="btn btn-default btn-flat" onclick="logOut();">로그아웃</a>
-                            </div>
-                        </li>
+                        <c:if test="${sessionScope.userInfo != null}">
+	                        <li class="user-header">
+	                            <img src="<c:url value="/resources/dist/img/default-user-image.jpg"/>" class="img-circle" alt="User Image">
+	
+	                            <p>
+	                                ${sessionScope.userInfo.userName}
+	                            </p>
+	                        </li>
+	                        <%-- Menu Footer--%>
+	                        <li class="user-footer">
+	                            <div class="pull-left">
+	                                <a href="#" class="btn btn-default btn-flat">프로필</a>
+	                            </div>
+	                            <div class="pull-right">
+	                                <a href="#" class="btn btn-default btn-flat" onclick="logOut();">로그아웃</a>
+	                            </div>
+	                        </li>
+                        </c:if>
+                        <c:if test="${sessionScope.userInfo == null}">
+	                        <li class="user-header">
+	                            <img src="<c:url value="/resources/dist/img/default-user-image.jpg"/>" class="img-circle" alt="User Image">
+	
+	                            <p>
+	                                Guest
+	                            </p>
+	                        </li>
+	                        <%-- Menu Footer--%>
+	                        <li class="user-footer">
+	                            <div class="pull-left">
+	                                <a href="#" class="btn btn-default btn-flat">회원가입</a>
+	                            </div>
+	                            <div class="pull-right">
+	                                <a href="#" class="btn btn-default btn-flat" onclick="login();">로그인</a>
+	                            </div>
+	                        </li>
+                        </c:if>
                     </ul>
                 </li>
                 <%-- Control Sidebar Toggle Button --%>
@@ -151,9 +176,12 @@
     </nav>
     <script type="text/javascript">
 
+    function login() {
+        location.href = '/login/form.do';
+    }
+    
       function logOut() {
-          console.log('test');
-          location.href = contextUri("login/logOutProc.do");
+          location.href = '/login/out.do';
       }
 
    

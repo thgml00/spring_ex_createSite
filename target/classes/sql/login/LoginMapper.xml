@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper  namespace="mysite.kr.code.login.dao.LoginMapper">
+
+
+ <select id="getUserInfo"  parameterType="map" resultType="loginVO">
+
+            select user_id,
+                       user_name,
+                       user_birth,
+                       user_gender,
+                       user_addr1,
+                       user_addr2,
+                       user_role_id,
+                       user_passwd,
+                       date_format(create_time, '%Y-%m-%d  %H:%i:%s' ) as create_time
+             from user_info
+             where user_id = #{userId}
+             
+ </select>
+
+</mapper>

@@ -68,15 +68,15 @@ public class PagingVO {
 			 //이전블럭으로 가기 작성 하기 위함 
 			  pageNumber =  (nowBlock -1) * blockPageCount;
 			  sb.append("<li class='page-item'>");
-			  sb.append("  <a class='page-link'  href=\"javascript:void(0);\"  onclick=\"goPage(" + pageNumber +");\">");
+			  sb.append("  <a class='page-link'  href=\"javascript:void(0);\"  onclick=\"goPage(" + pageNumber +");\" >");
 			  sb.append("Previous</a></li>");
 		 }
 		 
-		 if( nowPageNumber > 0) {
-       	  sb.append("<li class='page-item'>");
-  			  sb.append("  <a class='page-link'  href=\"javascript:void(0);\"  onclick=\"goPage(" + (nowPageNumber -1) +");\">");
+		 if(nowPageNumber  >  0) {
+			 sb.append("<li class='page-item'>");
+  			  sb.append("  <a class='page-link'  href=\"javascript:void(0);\"  onclick=\"goPage(" + (nowPageNumber -1) +");\" >");
   			  sb.append("First </a></li>");
-        }
+		 }
 		 
 		 //페이지 리스트 만들기
 		 for(int i = 0; i < blockPageCount ; i++) {
@@ -84,7 +84,7 @@ public class PagingVO {
 			 
 			 if(pageNumber == nowPageNumber) {
 				  sb.append("<li class='page-item active'>");
-				  sb.append("  <a class='page-link'  href=\"javascript:void(0);\"  onclick=\"goPage(" + pageNumber +");\">");
+				  sb.append("  <a class='page-link'  href=\"javascript:void(0);\"  onclick=\"goPage(" + pageNumber +");\"> ");
 				  sb.append( (pageNumber + 1)   +    "</a></li>");
 			 }else {
 				  sb.append("<li class='page-item'>");
@@ -95,20 +95,20 @@ public class PagingVO {
              if ((nowBlock * blockPageCount) + i + 1 == totalPage) {
             	   break;
              }
-             
+		
 		 }
 		 
-		//다음블럭으로 가기 버튼 만들기 
+		   //다음블럭으로 가기 버튼 만들기 
          if(nowBlock +1 <  totalBlock) {
         	 pageNumber =  (nowBlock + 1) * blockPageCount;
    			  sb.append("<li class='page-item'>");
-   			  sb.append("  <a class='page-link'  href=\"javascript:void(0);\"  onclick=\"goPage(" + pageNumber +");\">");
+   			  sb.append("  <a class='page-link'  href=\"javascript:void(0);\"  onclick=\"goPage(" + pageNumber +");\" >");
    			  sb.append("Next </a></li>");
          }
          //마지막 페이지로 이동 버튼 만들기 
          if( nowPageNumber +1  < totalPage) {
         	  sb.append("<li class='page-item'>");
-   			  sb.append("  <a class='page-link'  href=\"javascript:void(0);\"  onclick=\"goPage(" + (totalPage -1) +");\">");
+   			  sb.append("  <a class='page-link'  href=\"javascript:void(0);\"  onclick=\"goPage(" + (totalPage -1) +");\" >");
    			  sb.append("Last </a></li>");
          }
 		 

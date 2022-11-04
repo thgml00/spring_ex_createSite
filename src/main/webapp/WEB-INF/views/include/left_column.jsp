@@ -13,7 +13,18 @@
                 <img src="<c:url value="/resources/dist/img/default-user-image.jpg" />"  class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-                <p>Guest</p>
+                <c:if test="${sessionScope.userInfo != null}">
+                   <p style="font-size:20px;">${sessionScope.userInfo.userName}</p>
+                   <div>
+                   		<p style="font-size:10px;margin-left:7px;"><a href="/login/out.do">[로그아웃]</a></p>
+                   </div>
+                </c:if>
+                 <c:if test="${sessionScope.userInfo == null}">
+                <p style="font-size:20px;">Guest</p>
+                <div>
+                	<p style="font-size:10px;margin-left:7px;"><a href="/login/form.do">[로그인]</a></p>
+                </div>
+                </c:if>
             </div>
         </div>
 

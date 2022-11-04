@@ -29,23 +29,23 @@ public interface BoardMapper {
 	List<BoardVO> getBoardList(Map<String,  Object> param) throws SQLException;
 	
 	/**
-	 * 게시판 상세글 보기 
+	 * 게시판 상세글보기 
 	 * @param param
 	 * @return
 	 * @throws SQLException
 	 */
-	BoardVO getBoardDetail(Map<String,  Object> param) throws SQLException;
+	BoardVO  getBoardDetail(Map<String,  Object> param) throws SQLException;
 	
 	/**
 	 * 게시글 쓰기 
-	 * @param param
+	 * @param boardCreate
 	 * @return
 	 * @throws SQLException
 	 */
 	int writeBoard(BoardData.BoardCreate boardCreate) throws SQLException;
 	
 	/**
-	 * 조회수 변경 
+	 * 조회수 변경
 	 * @param param
 	 * @return
 	 * @throws SQLException
@@ -53,7 +53,8 @@ public interface BoardMapper {
 	int updateBoardCount(Map<String,  Object> param) throws SQLException;
 	
 	/**
-	 * 게시판 수정 
+	 * 게시판 수정
+	 * 
 	 * @param boardCreate
 	 * @return
 	 * @throws SQLException
@@ -61,7 +62,7 @@ public interface BoardMapper {
 	int updateBoard(BoardData.BoardCreate boardCreate) throws SQLException;
 	
 	/**
-	 * 게시글 삭제 
+	 * 게시글 삭제
 	 * @param param
 	 * @return
 	 * @throws SQLException

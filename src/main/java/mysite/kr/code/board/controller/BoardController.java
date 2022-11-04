@@ -33,7 +33,7 @@ public class BoardController {
 		return view;
 	}
 	
-	//암호화가 되어있다면 postmapping 사용
+	
 	@PostMapping("/list.do")
 	@ResponseBody
 	public Map<String, Object> getBordData(@RequestParam(name="nowPageNumber") int nowPageNumber) throws Exception {
@@ -42,18 +42,20 @@ public class BoardController {
 		return boardService.getBoardList(param);
 	}
 	
+	
 	@GetMapping("/detail.do")
-	public ModelAndView getBoardDetail(@RequestParam(name="boardId") int boardId) throws Exception {
+	public ModelAndView getBordDetail(@RequestParam(name="boardId") int boardId) throws Exception {
 		Map<String, Object> param = new HashMap<>();
 		param.put("boardId", boardId);
-		BoardVO vo=boardService.getBoardDetail(param);
+		BoardVO vo = boardService.getBoardDetail(param);
 		
-		ModelAndView view=new ModelAndView();
-		view.addObject("board",vo);
+		ModelAndView view = new ModelAndView();
+		view.addObject("board", vo);
 		view.setViewName("board/detail");
 		
-		return view;
+		return  view;
 	}
+	
 	
 	@GetMapping("/write.do")
 	 public ModelAndView boardWriteView()  {
@@ -64,80 +66,86 @@ public class BoardController {
 	
 	@PostMapping("/write.do")
 	@ResponseBody
-	public Map<String, Object> writeBoard(@ModelAttribute BoardData.BoardRequest boardRequest) {
-		Map<String, Object> resultMap = new HashMap<>();
-		try {
-			boardService.writeBoard(boardRequest); //글쓰기
-			resultMap.put("resultCode", 200);
-		}catch(Exception e) {
-			resultMap.put("resultCode", 500);
+	public Map<String, Object>  writeBoard( @ModelAttribute BoardData.BoardRequest  boardRequest) {
+		 Map<String, Object> resultMap = new HashMap<>();
+		 try {
+		
+			 boardService.writeBoard(boardRequest); //글쓰기 
+			 resultMap.put("resultCode", 200);
+		 
+		 }catch (Exception e) {
+			 resultMap.put("resultCode", 500);
 			e.printStackTrace();
 		}
-		return resultMap;
+		 return resultMap;
 	}
 	
+	
 	@GetMapping("/update.do")
-	 public ModelAndView updateboardView(@RequestParam(name="boardId") int boardId) throws Exception  {
+	 public ModelAndView updateboardView(@RequestParam(name="boardId") int boardId) throws Exception   {
 		ModelAndView view = new ModelAndView();
-		
+	
 		Map<String, Object> param = new HashMap<>();
 		param.put("boardId", boardId);
-		BoardVO vo=boardService.getBoardDetail(param);
+		BoardVO vo = boardService.getBoardDetail(param);
 		
-		view.addObject("board",vo);
+		view.addObject("board", vo);
 		view.setViewName("board/modify");
+
 		return view;
 	}
 	
+	
 	@PostMapping("/update.do")
 	@ResponseBody
-	public Map<String, Object> updateBoard(@ModelAttribute BoardData.BoardRequest boardRequest) {
-		Map<String, Object> resultMap = new HashMap<>();
-		try {
-			boardService.updateBoard(boardRequest); //글쓰기
-			resultMap.put("resultCode", 200);
-		}catch(Exception e) {
-			resultMap.put("resultCode", 500);
+	public Map<String, Object>  updateBoard( @ModelAttribute BoardData.BoardRequest  boardRequest) {
+		 Map<String, Object> resultMap = new HashMap<>();
+		 try {
+		
+			 boardService.updateBoard(boardRequest); //글 수정 
+			 resultMap.put("resultCode", 200);
+		 
+		 }catch (Exception e) {
+			 resultMap.put("resultCode", 500);
 			e.printStackTrace();
 		}
-		return resultMap;
+		 return resultMap;
 	}
 	
 	@GetMapping("/down.do")
 	public ModelAndView fileDown(@RequestParam(name="boardId") int boardId) throws Exception{
-		ModelAndView view=new ModelAndView();
+		ModelAndView view  = new ModelAndView();
 		
 		Map<String, Object> param = new HashMap<>();
 		param.put("boardId", boardId);
-		BoardVO vo=boardService.getBoardDetail(param);
+		BoardVO vo = boardService.getBoardDetail(param);
 		
-		if(vo.getStoredFileName()!=null && vo.getStoredFileName().length()>0) {
-			String path=CommonUtils.uploadPath+vo.getStoredFileName();
+		if(vo.getStoredFileName() != null && vo.getStoredFileName().length() > 0 ) {
+			String path= CommonUtils.uploadPath + vo.getStoredFileName();
 			
-			File file=new File(path);
-			
-			view.addObject("downFile",file);
-			view.addObject("fileName",vo.getOriginFileName());
+			File file = new File(path);
+			view.addObject("downFile", file);
+			view.addObject("fileName", vo.getOriginFileName());
+		
 			view.setViewName("downloadView");
 		}
 		
 		return view;
 	}
 	
-	@GetMapping("/remove.do")
-	@ResponseBody
-	public Map<String, Object> removeBoard(@RequestParam(name="boardId") int boardId) throws Exception{
-		Map<String, Object> resultMap=new HashMap<>();
-		int result=boardService.deleteBoard(boardId);
+	 @GetMapping("/remove.do")
+	 @ResponseBody
+	 public Map<String, Object> removeBoard(@RequestParam(name="boardId") int boarId) throws Exception {
+		 Map<String, Object> resultMap = new HashMap<>();
+		 int result = boardService.deleteBoard(boarId);
+		 
+		 if(result > 0) {
+			 resultMap.put("resultCode", 200);
+		 }else {
+			 resultMap.put("resultCode", 500);
+		 }
 		
-		if(result>0) {
-			resultMap.put("resultCode", 200);
-		}else {
-			resultMap.put("resultCode", 500);
-		}
-		
-		return resultMap;
-	}
-	
+		 return resultMap;
+	 }
 	
 }

@@ -48,113 +48,114 @@ public class BoardService {
 		return resultMap;
 	}
 	
-	public BoardVO getBoardDetail(Map<String, Object>param) throws Exception{
+	public BoardVO  getBoardDetail(Map<String,  Object> param) throws Exception {
 		//조회수 증가
 		mapper.updateBoardCount(param);
 		return mapper.getBoardDetail(param);
 	}
 	
-	public void writeBoard(BoardData.BoardRequest boardRequest) throws Exception{
-		BoardData.BoardCreate boardCreate= BoardData.BoardCreate
-										.builder()
-										.boardTitle(boardRequest.getBoardTitle())
-										.boardContents(boardRequest.getBoardContents())
-										.boardWriter("관리자")
-										.build();
+	
+	public void writeBoard(BoardData.BoardRequest  boardRequest) throws Exception {
+		BoardData.BoardCreate  boardCreate  =  BoardData.BoardCreate
+				                                                                  .builder()
+				                                                                  .boardTitle(boardRequest.getBoardTitle())
+				                                                                  .boardContents(boardRequest.getBoardContents())
+				                                                                  .boardWriter("관리자")
+				                                                                   .build();
+		
 		this.uploadFile(boardRequest, boardCreate);
 		this.mapper.writeBoard(boardCreate);
-		
 	}
 	
-	public void updateBoard(BoardData.BoardRequest boardRequest) throws Exception{
-		BoardData.BoardCreate boardCreate= BoardData.BoardCreate
-										.builder()
-										.boardTitle(boardRequest.getBoardTitle())
-										.boardContents(boardRequest.getBoardContents())
-										.boardId(boardRequest.getBoardId())
-										.build();
+
+	public void updateBoard(BoardData.BoardRequest  boardRequest) throws Exception {
+		BoardData.BoardCreate  boardCreate  =  BoardData.BoardCreate
+				                                                                  .builder()
+				                                                                  .boardTitle(boardRequest.getBoardTitle())
+				                                                                  .boardContents(boardRequest.getBoardContents())
+				                                                                  .boardId(boardRequest.getBoardId())
+				                                                                   .build();
 		
 		Map<String, Object> param = new HashMap<>();
-		param.put("boardId",boardRequest.getBoardId());
+		param.put("boardId", boardRequest.getBoardId());
 		//기존 정보 가져오기
-		BoardVO vo=this.getBoardDetail(param);
+		BoardVO vo  = this.getBoardDetail(param);
 		
-		//수정할 데이터에 파일 객체가 존재한다면 기존 파일은 지워야 함
-		if(boardRequest.getFile()!=null && !boardRequest.getFile().isEmpty()) {
-			String fullPath=CommonUtils.uploadPath+vo.getStoredFileName();
-			File file=new File(fullPath);
-			//해당경로에 진짜 존재한다면
-			if(file.exists()) {
-				//지운다
-				file.delete();
-			}
+		//수정할 데이터에 파일 객체가 존재한다면 기존 파일은 지워야한다.
+		if(boardRequest.getFile() != null  &&  !boardRequest.getFile().isEmpty()) {
+			 String fullPath = CommonUtils.uploadPath  + vo.getStoredFileName();
+			 File file = new File(fullPath);
+			 //해당경로에 진짜 존재한다면
+			 if(file.exists()) {
+				 //지운다.
+				 file.delete();
+			 }
+			 
 			this.uploadFile(boardRequest, boardCreate);
 		}
-		
+	
 		this.mapper.updateBoard(boardCreate);
-		
 	}
 	
-	public int deleteBoard(int boardId) throws Exception{
+	
+	public int  deleteBoard(int boardId) throws Exception {
+
 		Map<String, Object> param = new HashMap<>();
-		param.put("boardId",boardId);
+		param.put("boardId", boardId);
 		//기존 정보 가져오기
-		BoardVO vo=this.getBoardDetail(param);
+		BoardVO vo  = this.getBoardDetail(param);
 		
-		//수정할 데이터에 파일 객체가 존재한다면 기존 파일은 지워야 함
-		if(vo.getStoredFileName()!=null && vo.getStoredFileName().length()>0) {
-			String fullPath=CommonUtils.uploadPath+vo.getStoredFileName();
-			File file=new File(fullPath);
-			//해당경로에 진짜 존재한다면
-			if(file.exists()) {
-				//지운다
-				file.delete();
-			}
+		//삭제할 데이터에 파일 객체가 존재한다면 기존 파일은 지워야한다.
+		if(vo.getStoredFileName()  != null  && vo.getStoredFileName() .length() > 0  ) {
+			 String fullPath = CommonUtils.uploadPath  + vo.getStoredFileName();
+			 File file = new File(fullPath);
+			 //해당경로에 진짜 존재한다면
+			 if(file.exists()) {
+				 //지운다.
+				 file.delete();
+			 }
 		}
-		
+	
 		return this.mapper.deleteBoard(param);
-		
 	}
 	
-	/*
-	 *파일을 업로드하기
-	 *@param boardRequest
-	 *@throws Exception
+	
+	
+	/**
+	 * 파일을 업로드하기 
+	 * @param boardRequest
+	 * @throws Exception
 	 */
-	public void uploadFile(BoardData.BoardRequest boardRequest, BoardData.BoardCreate boardCreate) throws Exception{
-		MultipartFile file=boardRequest.getFile();
-		
-		//파일 객체가 존재할 경우
-		if(file!=null && !file.isEmpty()) {
-			String originFileName=file.getOriginalFilename();
-			//확장자
-			String ext=originFileName.substring(originFileName.lastIndexOf(".")+1);
-			//중복되지 않는 이름을 가져온다.
-			String randomName=CommonUtils.getUUID();
-			
-			//저장할 파일 명 만들기
-			String storedFileName=randomName+"."+ext;
-			//저장할 파일의 전체 경로 만들기
-			String fullPath=CommonUtils.uploadPath+storedFileName;
-			
-			//파일객체 만들기 - 파일을 컨트롤하기 위함
-			File newFile=new File(fullPath);
-			
-			//저장할 경로가 존재하지 않는다면 우선 만듦
-			if(!newFile.getParentFile().exists()) {
-				//전체 폴더경로를 생성함
-				//mkdir()로 한다면 상위 폴더 하나만 만들어지기 때문에 mkdirs() 사용
-				newFile.getParentFile().mkdirs();
-			}
-			
-			//기존 파일을 복사할 빈 파일 만들기
-			newFile.createNewFile();
-			//기존 파일을 생성된 새로운 빈 파일로 복사
-			file.transferTo(newFile);
-			
-			//등록할 파일 이름들을 객체에 저장
-			boardCreate.setOriginFileName(originFileName);
-			boardCreate.setStoredFileName(storedFileName);
+	public void uploadFile(BoardData.BoardRequest boardRequest,   BoardData.BoardCreate boardCreate)  throws Exception {	
+		MultipartFile file = boardRequest.getFile();	
+		//파일 객체가 존재할 경우 
+		if (file != null  &&  !file.isEmpty() ) {
+			 String originFileName =  file.getOriginalFilename();
+			 //확장자
+			 String ext =  originFileName.substring( originFileName.lastIndexOf(".")+ 1 ) ;
+			 //중복되지 않는 이름을 가져온다.
+			 String randomName = CommonUtils.getUUID();			 
+			 //저장할 파일 명 만들기
+			 String storedFileName = randomName +"." + ext;
+			 //저장할 파일의 전체 경로 만들기 
+			 String fullPath = CommonUtils.uploadPath  + storedFileName;	 
+			 //파일객체 만들기 - 파일을 컨트롤하기 위함.
+			 File newFile  =  new File(fullPath);
+			 
+			 //저장할 경로가 실제(물리적)로  존재하지 않으면 우선 만든다.
+			 if ( !newFile.getParentFile().exists()) {
+				 //전체 폴더경로를 생성한다
+				  newFile.getParentFile().mkdirs();
+			 }
+			 
+			 //기존 파일을 복사할 빈 파일 만들기
+			 newFile.createNewFile();
+			 //기존파일을 생성된 새로운 빈 파일로 복사한다.
+			 file.transferTo(newFile);
+			 
+			 //등록할 파일 이름들을 객체에 저장한다.
+			 boardCreate.setOriginFileName(originFileName);
+			 boardCreate.setStoredFileName(storedFileName);
 		}
-	}
+	}	
 }
