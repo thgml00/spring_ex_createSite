@@ -1,5 +1,6 @@
 package mysite.kr.code.login.service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -40,6 +41,41 @@ public class LoginService {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+		return result;
+	}
+	
+	/**
+	 * 아이디 중복체크
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 */
+	public int userIdCheck(String userId) throws Exception{
+		Map<String, Object> param=new HashMap<>();
+		param.put("userId", userId);
+		return mapper.userIdCheck(param);
+	}
+	
+	/**
+	 * 사용자 등록
+	 * @param userInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public int insertUserInfo(LoginData.LoginUserInfo userInfo){
+		int result=0;
+		try {
+			//사용자 비밀번호 암호화
+			String encodePasswd=passwordEncoder.encode(userInfo.getUserPasswd());
+			
+			//암호화된 패스워드로 치환
+			userInfo.setUserPasswd(encodePasswd);
+			result=mapper.insertUserInfo(userInfo);
+		}catch(Exception e) {
+			result=-1;
+			e.printStackTrace();
+		}
+		
 		return result;
 	}
 }

@@ -15,6 +15,19 @@
 
   <context:component-scan base-package="mysite.kr.code" />
   
+  <interceptors>
+  	<interceptor>
+  		<mapping path="/**"/>
+		<exclude-mapping path="/login/**"/>
+		<exclude-mapping path="/main/main.do"/>
+		<exclude-mapping path="/board/list.do"/>
+		<exclude-mapping path="/board/detail.do"/>
+		<exclude-mapping path="/resources/**"/>
+		<beans:bean id="loginCheckInterceptor" class="mysite.kr.code.common.interceptor.LoginCheckInterceptor"/>
+  		
+  	</interceptor>
+  </interceptors>
+  
   <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
       <beans:property name="order" value="2" />
       <beans:property name="prefix" value="/WEB-INF/views/" />

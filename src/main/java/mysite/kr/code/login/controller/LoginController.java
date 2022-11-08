@@ -11,7 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,6 +33,14 @@ public class LoginController {
 	public ModelAndView  loginView() throws Exception {
 		ModelAndView view = new ModelAndView();
 		view.setViewName("login/loginForm");
+		
+		return view;
+	}
+	
+	@GetMapping("/error/info.do")
+	public ModelAndView  errorView() throws Exception {
+		ModelAndView view = new ModelAndView();
+		view.setViewName("login/error_info");
 		
 		return view;
 	}
@@ -129,6 +139,47 @@ public class LoginController {
 		view.setViewName("redirect:/login/form.do");
 		
 		return view;
+	}
+	
+	@GetMapping("/join.do")
+	public ModelAndView  joinView() throws Exception {
+		ModelAndView view = new ModelAndView();
+		view.setViewName("login/joinForm");
+		
+		return view;
+	}
+	
+	@PostMapping("/join.do")
+	@ResponseBody
+	public Map<String, Object> insertUserInfo(@RequestBody LoginData.LoginUserInfo userInfo) throws Exception{
+		Map<String, Object> resultMap=new HashMap<>();
+		
+		int result=service.insertUserInfo(userInfo);
+		
+		if(result>0) {
+			resultMap.put("resultCode", 200);
+		}else {
+			resultMap.put("resultCode", 500);
+		}
+		
+		return resultMap;
+	}
+	
+	@GetMapping("/check/id.do")
+	@ResponseBody
+	public Map<String, Object> checkUserId(@RequestParam(name="userId") String userId) throws Exception{
+		Map<String, Object> resultMap=new HashMap<>();
+		
+		int result=service.userIdCheck(userId);
+		
+		if(result==0) {
+			resultMap.put("resultCode", 200);
+		}else {
+			resultMap.put("resultCode", 300);
+		}
+		
+		return resultMap;
+		
 	}
 
 }

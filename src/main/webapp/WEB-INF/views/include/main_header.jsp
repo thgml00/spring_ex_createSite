@@ -161,7 +161,7 @@
 	                        <%-- Menu Footer--%>
 	                        <li class="user-footer">
 	                            <div class="pull-left">
-	                                <a href="#" class="btn btn-default btn-flat">회원가입</a>
+	                                <a href="#" class="btn btn-default btn-flat" onclick="join();">회원가입</a>
 	                            </div>
 	                            <div class="pull-right">
 	                                <a href="#" class="btn btn-default btn-flat" onclick="login();">로그인</a>
@@ -176,12 +176,16 @@
     </nav>
     <script type="text/javascript">
 
-    function login() {
-        location.href = '/login/form.do';
-    }
+      function login() {
+          location.href = '/login/form.do';
+      }
     
       function logOut() {
           location.href = '/login/out.do';
+      }
+      
+      function join() {
+          location.href = '/login/join.do';
       }
 
    

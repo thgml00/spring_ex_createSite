@@ -18,4 +18,20 @@ public interface LoginMapper {
 	 */
 	LoginData.LoginUserInfo  getUserInfo(Map<String, Object> param) throws SQLException;
 	
+	/**
+	 * 아이디 중복체크
+	 * @param param
+	 * @return
+	 * @throws SQLException
+	 */
+	int userIdCheck(Map<String, Object> param) throws SQLException;
+	
+	/**
+	 * 사용자 등록
+	 * @param userInfo
+	 * @return
+	 * @throws SQLException
+	 */
+	int insertUserInfo(LoginData.LoginUserInfo userInfo) throws SQLException;
+	
 }

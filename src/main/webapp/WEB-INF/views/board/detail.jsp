@@ -50,7 +50,7 @@
     	   const listBtn   = $('#listBtn');
     	   const deleteBtn = $('#deleteBtn');
     	   
-    	   if(typeof modifyBtn !=='undifined') {
+    	   if(typeof modifyBtn !=='undefined') {
     		   modifyBtn.addEventListener('click', function(e) {
     			  console.log(e);
     			      e.preventDefault(); //이벤트 동작 방지 
@@ -58,13 +58,13 @@
     		   });
     	   }
     	   
-     	   if(typeof listBtn !=='undifined') {
+     	   if(typeof listBtn !=='undefined') {
      		  listBtn.on('click',  function(e) {
      				$('#contents').load('/board/list.do', null);
     		   });
      	   }
      	   
-     	  if(typeof deleteBtn !=='undifined') {
+     	  if(typeof deleteBtn !=='undefined') {
      		 deleteBtn.on('click',  function(e) {
    				
      			 const isConfirm = confirm('정말 삭제하시겠습니까 ?');
@@ -76,6 +76,9 @@
      					 dataType : 'json',
      					 data : {
      						   boardId : $('#boardId').val()
+     					 },
+     					 beforeSend:function(xhr){
+     						 xhr.setRequestHeader("AJAX",true);
      					 }
      				 }).done(function(data){
      					 
@@ -89,7 +92,9 @@
      					 
      					 
      				 }).fail(function(xhr, status, error){
-     					   console.log(error);
+     					 if(xhr.status===401){
+     						 alert('로그인이 필요한 기능힙니다. 로그인하십시오.');
+     					 }
      				 });
      				 
      			 }

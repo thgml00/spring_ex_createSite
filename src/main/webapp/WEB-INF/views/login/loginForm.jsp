@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="<c:url value="/resources/bower_components/Ionicons/css/ionicons.min.css"/>">
     <%-- Theme style --%>
     <link rel="stylesheet" href="<c:url value="/resources/dist/css/AdminLTE.min.css"/>">
-     <%@ include file="../include/plugin_js.jsp" %>
+    <%@ include file="../include/plugin_js.jsp" %>
 </head>
 <body class="hold-transition login-page" >
      <div class="login-box">
@@ -32,7 +32,7 @@
                            <input type="text" class="form-control"     id="userId"   name="userId"     placeholder="ID 입력">
                             <span class="glyphicon glyphicon-envelope  form-control-feedback"></span>
                      </div>
-                          <div class="form-group has-feedback">
+                     <div class="form-group has-feedback">
                            <input type="password" class="form-control"    id="userPasswd"   name="userPasswd"  placeholder="PASSWORD 입력">
                             <span class="glyphicon glyphicon-lock  form-control-feedback"></span>
                      </div>
